@@ -1,0 +1,334 @@
+---
+import { translations } from '../data/translations.js';
+---
+
+<button id="language-toggle" aria-label="Change language">
+  EN | ES
+</button>
+
+<style>
+  #language-toggle {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  #language-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  #language-toggle:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    #language-toggle {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  }
+</style>
+
+<script define:vars={{ translations }}>
+  function setLanguage(lang) {
+    const t = translations[lang];
+    
+    // Update profile info
+    const profileTitle = document.querySelector('.profile-info h2');
+    if (profileTitle) profileTitle.textContent = t.title;
+    
+    const profileSummary = document.querySelector('.profile-summary');
+    if (profileSummary) profileSummary.textContent = t.summary;
+    
+    // Update contact info
+    const locationElement = document.querySelector('.location');
+    if (locationElement) locationElement.textContent = t.location;
+    
+    // Keep LinkedIn link text as "Natalia Gresa" regardless of language
+    const linkedinElement = document.querySelector('.linkedin span');
+    if (linkedinElement) {
+      linkedinElement.textContent = 'Natalia Gresa';
+    }
+    
+    // Update section headings
+    const h3Elements = document.querySelectorAll('.cv-section h3');
+    if (h3Elements[0]) h3Elements[0].textContent = t.education;
+    if (h3Elements[1]) h3Elements[1].textContent = t.technicalSkills;
+    if (h3Elements[2]) h3Elements[2].textContent = t.languages;
+    if (h3Elements[3]) h3Elements[3].textContent = t.certifications;
+    if (h3Elements[4]) h3Elements[4].textContent = t.experience;
+    if (h3Elements[5]) h3Elements[5].textContent = t.projects;
+    
+    // Update education
+    const educationTitles = document.querySelectorAll('.education-degree h4');
+    const institutions = document.querySelectorAll('.institution');
+    const grades = document.querySelectorAll('.grade');
+    const educationDescriptions = document.querySelectorAll('.education-description');
+    
+    if (educationTitles[0]) educationTitles[0].textContent = t.masterDegree;
+    if (institutions[0]) institutions[0].textContent = t.masterInstitution;
+    if (grades[0]) grades[0].textContent = t.masterGrade;
+    if (educationDescriptions[0]) educationDescriptions[0].textContent = t.masterDescription;
+    
+    if (educationTitles[1]) educationTitles[1].textContent = t.bachelorDegree;
+    if (institutions[1]) institutions[1].textContent = t.bachelorInstitution;
+    if (grades[1]) grades[1].textContent = t.bachelorGrade;
+    if (educationDescriptions[1]) educationDescriptions[1].textContent = t.bachelorDescription;
+    
+    // Update technical skills section
+    const skillCategories = document.querySelectorAll('.skill-category h4');
+    if (skillCategories[0]) skillCategories[0].textContent = t.analyticalTechniques;
+    if (skillCategories[1]) skillCategories[1].textContent = t.software;
+    if (skillCategories[2]) skillCategories[2].textContent = t.laboratory;
+    
+    // Update individual skill items
+    const skillItems = document.querySelectorAll('.skills-list li');
+    const technicalSkillMappings = {
+      'HPLC/UHPLC': t.hplcUhplc,
+      'GC-MS': t.gcMs,
+      'Espectroscopía UV-Vis': t.uvVisSpectroscopy,
+      'UV-Vis Spectroscopy': t.uvVisSpectroscopy,
+      'FTIR/Raman': t.ftirRaman,
+      'RMN': t.nmr,
+      'NMR': t.nmr,
+      'Espectrometría de masas': t.massSpectrometry,
+      'Mass Spectrometry': t.massSpectrometry,
+      'ChemStation': t.chemStation,
+      'MassHunter': t.massHunter,
+      'ChemDraw': t.chemDraw,
+      'Origin/GraphPad': t.originGraphPad,
+      'R/Python (básico)': t.rPythonBasic,
+      'R/Python (basic)': t.rPythonBasic,
+      'MS Office Suite': t.msOffice,
+      'Buenas Prácticas Lab.': t.goodLabPractices,
+      'Good Lab Practices': t.goodLabPractices,
+      'Control de Calidad': t.qualityControl,
+      'Quality Control': t.qualityControl,
+      'Validación Métodos': t.methodValidation,
+      'Method Validation': t.methodValidation,
+      'Síntesis Orgánica': t.organicSynthesis,
+      'Organic Synthesis': t.organicSynthesis,
+      'Cultivos Celulares': t.cellCultures,
+      'Cell Cultures': t.cellCultures,
+      'Bioseguridad': t.biosafety,
+      'Biosafety': t.biosafety
+    };
+    
+    skillItems.forEach(item => {
+      const currentText = item.textContent.trim();
+      if (technicalSkillMappings[currentText]) {
+        item.textContent = technicalSkillMappings[currentText];
+      }
+    });
+    
+    // Update experience section
+    const experienceHeaders = document.querySelectorAll('.experience-header h4');
+    const companies = document.querySelectorAll('.company');
+    const periods = document.querySelectorAll('.period');
+    const experienceLocations = document.querySelectorAll('.experience-location');
+    const experienceSummaries = document.querySelectorAll('.experience-summary');
+    const projectTitles = document.querySelectorAll('.project-title');
+    const researchGroups = document.querySelectorAll('.research-group');
+    const contractTypes = document.querySelectorAll('.contract-type');
+    const experienceDuties = document.querySelectorAll('.experience-duties');
+    
+    // First experience: Zschimmer & Schwarz
+    if (experienceHeaders[0]) experienceHeaders[0].textContent = t.labTechnician;
+    if (companies[0]) companies[0].textContent = t.zschimmerCompany;
+    if (periods[0]) periods[0].textContent = t.zschimmerPeriod;
+    if (experienceLocations[0]) experienceLocations[0].textContent = t.zschimmerLocation;
+    if (experienceSummaries[0]) experienceSummaries[0].textContent = t.zschimmerSummary;
+    
+    // Update Zschimmer duties
+    if (experienceDuties[0] && t.zschimmerDuties) {
+      const dutyItems = experienceDuties[0].querySelectorAll('li');
+      t.zschimmerDuties.forEach((duty, index) => {
+        if (dutyItems[index]) dutyItems[index].textContent = duty;
+      });
+    }
+    
+    // Second experience: Universitat Jaume I
+    if (experienceHeaders[1]) experienceHeaders[1].textContent = t.researcher;
+    if (companies[1]) companies[1].textContent = t.ujiCompany;
+    if (periods[1]) periods[1].textContent = t.ujiPeriod;
+    if (experienceLocations[1]) experienceLocations[1].textContent = t.ujiLocation;
+    if (projectTitles[0]) {
+      projectTitles[0].innerHTML = `<strong>${lang === 'en' ? 'Project:' : 'Proyecto:'}</strong> ${t.ujiProject.split(': ')[1]}`;
+    }
+    if (researchGroups[0]) {
+      researchGroups[0].innerHTML = `<strong>${lang === 'en' ? 'Research groups:' : 'Grupos de investigación:'}</strong> ${t.ujiGroups.split(': ')[1]}`;
+    }
+    
+    // Third experience: Eurofins IPROMA
+    if (experienceHeaders[2]) experienceHeaders[2].textContent = t.labChemist;
+    if (companies[2]) companies[2].textContent = t.eurofinCompany;
+    if (periods[2]) periods[2].textContent = t.eurofinPeriod;
+    if (experienceLocations[2]) experienceLocations[2].textContent = t.eurofinLocation;
+    
+    // Fourth experience: QUIMIALMEL
+    if (experienceHeaders[3]) experienceHeaders[3].textContent = t.qualityController;
+    if (companies[3]) companies[3].textContent = t.quimialmelCompany;
+    if (periods[3]) periods[3].textContent = t.quimialmelPeriod;
+    if (experienceLocations[3]) experienceLocations[3].textContent = t.quimialmelLocation;
+    if (contractTypes[0]) contractTypes[0].textContent = t.quimialmelContract;
+    
+    // Update skills section labels
+    const skillsSectionLabels = document.querySelectorAll('.skills-section p');
+    skillsSectionLabels.forEach(label => {
+      if (label.textContent.includes('Aptitudes') || label.textContent.includes('Skills')) {
+        label.innerHTML = `<strong>${lang === 'en' ? 'Skills developed:' : 'Aptitudes desarrolladas:'}</strong>`;
+      }
+    });
+    
+    // Update skill tags
+    const skillTags = document.querySelectorAll('.skill-tag');
+    const skillMappings = {
+      'Capacidad de análisis': t.skills.analyticalCapacity,
+      'Analytical Capacity': t.skills.analyticalCapacity,
+      'Organización del laboratorio': t.skills.labOrganization,
+      'Laboratory Organization': t.skills.labOrganization,
+      'Comunicación': t.skills.communication,
+      'Communication': t.skills.communication,
+      'Investigación y desarrollo (I+D)': t.skills.researchDevelopment,
+      'Research & Development (R&D)': t.skills.researchDevelopment,
+      'Cromatografía de gases': t.skills.gasChromatography,
+      'Gas Chromatography': t.skills.gasChromatography,
+      'Buenas prácticas de laboratorio': t.skills.goodLabPractices,
+      'Good Laboratory Practices': t.skills.goodLabPractices,
+      'Espectroscopia UV-Vis': t.skills.uvVisSpectroscopy,
+      'UV-Vis Spectroscopy': t.skills.uvVisSpectroscopy,
+      'RMN': t.skills.nmr,
+      'NMR': t.skills.nmr,
+      'Síntesis química': t.skills.chemicalSynthesis,
+      'Chemical Synthesis': t.skills.chemicalSynthesis,
+      'Trabajo autónomo': t.skills.autonomousWork,
+      'Autonomous Work': t.skills.autonomousWork,
+      'Digestión de muestras': t.skills.sampleDigestion,
+      'Sample Digestion': t.skills.sampleDigestion,
+      'Resolución de problemas': t.skills.problemSolving,
+      'Problem Solving': t.skills.problemSolving,
+      'Preparación de muestras': t.skills.samplePreparation,
+      'Sample Preparation': t.skills.samplePreparation,
+      'Trabajo en equipo': t.skills.teamwork,
+      'Teamwork': t.skills.teamwork,
+      'Iniciativa': t.skills.initiative,
+      'Initiative': t.skills.initiative,
+      'Facilidad de adaptación': t.skills.adaptability,
+      'Adaptability': t.skills.adaptability,
+      'Capacidad analítica': t.skills.analyticalCapacity2,
+      'Química analítica': t.skills.analyticalChemistry,
+      'Analytical Chemistry': t.skills.analyticalChemistry,
+      'Aptitudes de organización': t.skills.organizationalSkills,
+      'Organizational Skills': t.skills.organizationalSkills,
+      'Control de calidad': t.skills.qualityControl,
+      'Quality Control': t.skills.qualityControl
+    };
+    
+    skillTags.forEach(tag => {
+      const currentText = tag.textContent.trim();
+      if (skillMappings[currentText]) {
+        tag.textContent = skillMappings[currentText];
+      }
+    });
+    
+    // Update Languages section
+    const languageItems = document.querySelectorAll('.language-item');
+    if (languageItems[0]) {
+      const spanishLabel = languageItems[0].querySelector('.language');
+      const spanishLevel = languageItems[0].querySelector('.level-text');
+      if (spanishLabel) spanishLabel.textContent = t.spanish;
+      if (spanishLevel) spanishLevel.textContent = t.native;
+    }
+    if (languageItems[1]) {
+      const englishLabel = languageItems[1].querySelector('.language');
+      const englishLevel = languageItems[1].querySelector('.level-text');
+      if (englishLabel) englishLabel.textContent = t.english;
+      if (englishLevel) englishLevel.textContent = t.advanced;
+    }
+    
+    // Update Certifications section
+    const certificationItems = document.querySelectorAll('.certifications-list li');
+    if (certificationItems[0]) {
+      const hplcTitle = certificationItems[0].querySelector('strong');
+      const hplcCompany = certificationItems[0].querySelector('span');
+      if (hplcTitle) hplcTitle.textContent = t.hplcCert;
+      if (hplcCompany) hplcCompany.textContent = t.hplcCertCompany;
+    }
+    if (certificationItems[1]) {
+      const gmpTitle = certificationItems[1].querySelector('strong');
+      const gmpCompany = certificationItems[1].querySelector('span');
+      if (gmpTitle) gmpTitle.textContent = t.gmpCert;
+      if (gmpCompany) gmpCompany.textContent = t.gmpCertCompany;
+    }
+    if (certificationItems[2]) {
+      const chemTitle = certificationItems[2].querySelector('strong');
+      const chemCompany = certificationItems[2].querySelector('span');
+      if (chemTitle) chemTitle.textContent = t.chemicalCert;
+      if (chemCompany) chemCompany.textContent = t.chemicalCertCompany;
+    }
+    
+    // Update Projects section
+    const projectItemTitles = document.querySelectorAll('.project-item h4');
+    const projectDescriptions = document.querySelectorAll('.project-description');
+    const techTags = document.querySelectorAll('.tech-tag');
+    
+    if (projectItemTitles[0]) projectItemTitles[0].textContent = t.biosensorProject;
+    if (projectDescriptions[0]) projectDescriptions[0].textContent = t.biosensorDescription;
+    
+    if (projectItemTitles[1]) projectItemTitles[1].textContent = t.nanoparticlesProject;
+    if (projectDescriptions[1]) projectDescriptions[1].textContent = t.nanoparticlesDescription;
+    
+    // Update tech tags
+    const techTagMappings = {
+      'Biosensores': t.biosensors,
+      'Biosensors': t.biosensors,
+      'Electroquímica': t.electrochemistry,
+      'Electrochemistry': t.electrochemistry,
+      'Análisis Ambiental': t.environmentalAnalysis,
+      'Environmental Analysis': t.environmentalAnalysis,
+      'Nanotecnología': t.nanotechnology,
+      'Nanotechnology': t.nanotechnology,
+      'Química Verde': t.greenChemistry,
+      'Green Chemistry': t.greenChemistry,
+      'Caracterización': t.characterization,
+      'Characterization': t.characterization
+    };
+    
+    techTags.forEach(tag => {
+      const currentText = tag.textContent.trim();
+      if (techTagMappings[currentText]) {
+        tag.textContent = techTagMappings[currentText];
+      }
+    });
+    
+    // Store language preference
+    localStorage.setItem('language', lang);
+  }
+
+  // Initialize language toggle
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('language-toggle');
+    const savedLang = localStorage.getItem('language') || 'en';
+    
+    // Set initial language
+    setLanguage(savedLang);
+    
+    // Toggle between languages
+    button?.addEventListener('click', () => {
+      const currentLang = localStorage.getItem('language') || 'en';
+      const newLang = currentLang === 'en' ? 'es' : 'en';
+      setLanguage(newLang);
+    });
+  });
+</script>
